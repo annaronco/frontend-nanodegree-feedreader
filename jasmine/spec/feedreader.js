@@ -60,23 +60,23 @@ $(function() {
          */
         it('is hidden', function() {
             var body = document.querySelector('body');
-
-            expect(body.className).toConain('menu-hidden');
+            expect(body.className).toContain('menu-hidden');
         });
 
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
-          */
-         it('changes visibility on click at the icon', function() {
+        /* A test that ensures the menu changes
+        * visibility when the menu icon is clicked. This test
+        * should have two expectations: does the menu display when
+        * clicked and does it hide when clicked again.
+        */
+        it('changes visibility on click at the icon', function() {
+            var body = document.querySelector('body');
             var icon = $('.menu-icon-link');
 
             icon.click();
-            expect(icon.className).not.toContain('menu-hidden');
+            expect(body.className).not.toContain('menu-hidden');
 
             icon.click();
-            expect(icon.className).toContain('menu-hidden');
+            expect(body.className).toContain('menu-hidden');
         });
     });
 
@@ -91,42 +91,42 @@ $(function() {
         */
 
         beforeEach(function(done) {
-            loadFeed(function() {
-            done();
+            loadFeed(0, function() {
+                done();
             });
         });
 
-       it('loadFeed function works', function() {
-            var entries = document.getElementsByClassName('feed');
+       it('loadFeed function works', function(done) {
+            var entries = document.querySelector('.feed').getElementsByClassName('entry').length;
 
-            expect(entries.length).not.toBe(0);
+            expect(entries).not.toBe(0);
+            done();
        });
     });
 
     /* A test suite named "New Feed Selection" */
     describe('New Feed Selection', function() {
 
-        /* TODO: Write a test that ensures when a new feed is loaded
+        /* A test that ensures when a new feed is loaded
         * by the loadFeed function that the content actually changes.
         * Remember, loadFeed() is asynchronous.
         */
-       var initalFeed;
+        var initialFeed;
+        beforeEach(function(done) {
+            loadFeed(0, function() {
+                initialFeed = document.querySelector('.feed').innerHTML;
 
-       beforeEach(function(done) {
-            loadFeed(function() {
-                initalFeed = document.getElementsByClassName('feed').innerHTML;
-
-                loadFeed(function() {
+                loadFeed(1, function() {
                     done();
                 });
             });
         });
 
-        it('new feed is loaded by loadFeed function', function() {
+        it('new feed is loaded by loadFeed function', function(done) {
             var nextFeed = document.getElementsByClassName('feed').innerHTML;
 
             expect(initialFeed).not.toBe(nextFeed);
             done();
         });
     });
-});
+}());
