@@ -70,20 +70,20 @@ $(function() {
           * clicked and does it hide when clicked again.
           */
          it('changes visibility on click at the icon', function() {
-            var icon = document.getElementsByClassName('menu-icon-link');
+            var icon = $('.menu-icon-link');
 
             icon.click();
-            expect(icon.className).not.toConain('menu-hidden');
+            expect(icon.className).not.toContain('menu-hidden');
 
             icon.click();
-            expect(icon.className).toConain('menu-hidden');
+            expect(icon.className).toContain('menu-hidden');
         });
     });
 
     /* A test suite named "Initial Entries" */
     describe('Initial Entries', function() {
 
-        /* TODO: Write a test that ensures when the loadFeed
+        /* A test that ensures when the loadFeed
         * function is called and completes its work, there is at least
         * a single .entry element within the .feed container.
         * Remember, loadFeed() is asynchronous so this test will require
@@ -103,12 +103,30 @@ $(function() {
        });
     });
 
-    /* TODO: Write a new test suite named "New Feed Selection" */
+    /* A test suite named "New Feed Selection" */
+    describe('New Feed Selection', function() {
 
+        /* TODO: Write a test that ensures when a new feed is loaded
+        * by the loadFeed function that the content actually changes.
+        * Remember, loadFeed() is asynchronous.
+        */
+       var initalFeed;
 
-       /* TODO: Write a test that ensures when a new feed is loaded
-       * by the loadFeed function that the content actually changes.
-       * Remember, loadFeed() is asynchronous.
-       */
+       beforeEach(function(done) {
+            loadFeed(function() {
+                initalFeed = document.getElementsByClassName('feed').innerHTML;
 
+                loadFeed(function() {
+                    done();
+                });
+            });
+        });
+
+        it('new feed is loaded by loadFeed function', function() {
+            var nextFeed = document.getElementsByClassName('feed').innerHTML;
+
+            expect(initialFeed).not.toBe(nextFeed);
+            done();
+        });
+    });
 });
